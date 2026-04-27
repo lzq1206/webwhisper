@@ -1,6 +1,11 @@
 const STORAGE_KEY = "webwhisper_demo_posts_v1";
 const SETTINGS_KEY = "webwhisper_demo_settings_v1";
 const MAX_RENDER = 80;
+const DEMO_POST_COUNT = 1000;
+const MIN_POST_AGE_MS = 3 * 60 * 1000;
+const MAX_POST_AGE_MS = 14 * 24 * 60 * 60 * 1000;
+const MAX_IMAGE_SIZE_BYTES = 4 * 1024 * 1024;
+const DIVERSITY_BOOST_FACTOR = 0.15;
 
 const defaults = {
   exploration: 55,
@@ -117,7 +122,7 @@ function persistSettings() {
   localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
 }
 
-function generateDemoPosts(count = 1000) {
+function generateDemoPosts(count = DEMO_POST_COUNT) {
   const now = Date.now();
   return Array.from({ length: count }, (_, i) => {
     const major = majors[randomInt(0, majors.length - 1)];
@@ -134,7 +139,7 @@ function generateDemoPosts(count = 1000) {
       exploration,
       rigor,
       likes: randomInt(0, 300),
-      createdAt: now - randomInt(3 * 60 * 1000, 14 * 24 * 60 * 60 * 1000),
+      createdAt: now - randomInt(MIN_POST_AGE_MS, MAX_POST_AGE_MS),
       source: "demo"
     };
   });
@@ -183,7 +188,7 @@ function scorePost(post, state, majorCounts) {
   if (state.autoRegulation) {
     const currentMajorCount = majorCounts.get(post.major) || 1;
     const avg = posts.length / majors.length;
-    const diversityBoost = clamp((avg / currentMajorCount) * state.targetDiversity * 0.15);
+    const diversityBoost = clamp((avg / currentMajorCount) * state.targetDiversity * DIVERSITY_BOOST_FACTOR);
     score += diversityBoost;
   }
 
@@ -337,7 +342,7 @@ async function handleSubmit(event) {
       formMessage.textContent = "上传文件必须为图片类型。";
       return;
     }
-    if (imageFile.size > 4 * 1024 * 1024) {
+    if (imageFile.size > MAX_IMAGE_SIZE_BYTES) {
       formMessage.classList.add("error");
       formMessage.textContent = "图片请小于 4MB。";
       return;
@@ -392,13 +397,14 @@ for (const [key, element] of Object.entries(controls)) {
 }
 
 form.addEventListener("submit", handleSubmit);
+seedBtn.textContent = `重置并生成 ${DEMO_POST_COUNT} 条演示帖子`;
 seedBtn.addEventListener("click", seedDemoPosts);
 resetBtn.addEventListener("click", resetControls);
 
 settings = loadSettings();
 posts = loadPosts();
-if (posts.length < 1000) {
-  const missingCount = 1000 - posts.length;
+if (posts.length < DEMO_POST_COUNT) {
+  const missingCount = DEMO_POST_COUNT - posts.length;
   const generated = generateDemoPosts(missingCount);
   posts = posts.concat(generated);
   persistPosts();
