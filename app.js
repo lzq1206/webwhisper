@@ -366,7 +366,6 @@ async function handleSubmit(event) {
 
   persistPosts();
   form.reset();
-  syncControlUI();
   renderFeed();
   formMessage.textContent = "发布成功（无需注册）。";
 }
@@ -401,7 +400,7 @@ posts = loadPosts();
 if (posts.length < 1000) {
   const missingCount = 1000 - posts.length;
   const generated = generateDemoPosts(missingCount);
-  posts = generated.concat(posts);
+  posts = posts.concat(generated);
   persistPosts();
 }
 applySettingsToUI();
