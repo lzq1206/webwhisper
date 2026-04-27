@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="WebWhisper — 允许用户自主选择算法的跨界社交平台" />
+  <title>WebWhisper · 打破信息茧房</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════ HEADER ═══════════════════════ -->
+  <header class="site-header" id="site-header">
+    <div class="header-inner container">
+      <a href="#" class="logo" aria-label="WebWhisper 首页">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">WebWhisper</span>
+      </a>
+
+      <button class="hamburger" id="hamburger" aria-label="展开菜单" aria-expanded="false" aria-controls="nav-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <nav class="nav" id="nav-menu" role="navigation" aria-label="主导航">
+        <ul class="nav-list">
+          <li><a href="#hero"     class="nav-link" data-section="hero">首页</a></li>
+          <li><a href="#concept"  class="nav-link" data-section="concept">概念</a></li>
+          <li><a href="#about"    class="nav-link" data-section="about">关于</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ═══════════════════════ HERO ═══════════════════════ -->
+    <section class="hero" id="hero">
+      <div class="hero-bg-grid" aria-hidden="true"></div>
+      <div class="hero-orbs" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+
+      <div class="hero-content container">
+        <div class="hero-badge">开放内测 · Beta</div>
+        <h1 class="hero-title">
+          打破信息茧房，<br />
+          <span class="gradient-text">重塑社交引力</span>
+        </h1>
+        <p class="hero-subtitle">
+          在这里，你不仅可以选择关注谁，<br class="br-mobile" />
+          更能选择你的<strong>推荐算法</strong>
+        </p>
+        <div class="hero-actions">
+          <a href="#concept" class="btn btn-primary">
+            <span>加入内测</span>
+            <svg class="btn-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#concept" class="btn btn-ghost">了解更多</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-value">3+</span>
+            <span class="stat-label">算法模式</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat">
+            <span class="stat-value">100%</span>
+            <span class="stat-label">用户主导</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat">
+            <span class="stat-value">∞</span>
+            <span class="stat-label">跨界可能</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ CONCEPT / ALGORITHM SELECTOR ═══════════════════════ -->
+    <section class="concept" id="concept">
+      <div class="container">
+        <div class="section-eyebrow">核心概念</div>
+        <h2 class="section-title">算法市场 <span class="gradient-text">由你做主</span></h2>
+        <p class="section-desc">
+          传统平台用同一套黑箱算法控制所有人的信息流。<br />
+          WebWhisper 把算法的选择权交还给你。
+        </p>
+
+        <!-- Algorithm Selector -->
+        <div class="algo-demo glass-card">
+          <div class="algo-tabs" role="tablist" aria-label="算法模式选择">
+
+            <button class="algo-tab active"
+                    role="tab"
+                    id="tab-academic"
+                    aria-selected="true"
+                    aria-controls="panel-academic"
+                    data-mode="academic">
+              <span class="tab-icon">🎓</span>
+              <span class="tab-label">学术严谨</span>
+            </button>
+
+            <button class="algo-tab"
+                    role="tab"
+                    id="tab-crossover"
+                    aria-selected="false"
+                    aria-controls="panel-crossover"
+                    data-mode="crossover">
+              <span class="tab-icon">⚡</span>
+              <span class="tab-label">跨界碰撞</span>
+            </button>
+
+            <button class="algo-tab"
+                    role="tab"
+                    id="tab-chronological"
+                    aria-selected="false"
+                    aria-controls="panel-chronological"
+                    data-mode="chronological">
+              <span class="tab-icon">⏱</span>
+              <span class="tab-label">时间序</span>
+            </button>
+
+          </div>
+
+          <!-- Feed Panels -->
+          <div class="algo-feed" id="algo-feed" aria-live="polite">
+
+            <div class="feed-panel active"
+                 role="tabpanel"
+                 id="panel-academic"
+                 aria-labelledby="tab-academic">
+              <div class="feed-header">
+                <span class="feed-mode-badge academic">学术严谨模式</span>
+                <p class="feed-mode-desc">优先呈现经同行引用、数据充分的深度内容，过滤情绪化标题党</p>
+              </div>
+              <ul class="feed-list">
+                <li class="feed-item">
+                  <div class="feed-meta"><span class="feed-author">量子计算研究者</span><span class="feed-time">3 小时前</span></div>
+                  <p class="feed-content">新论文：利用拓扑量子比特将错误率降低至 0.001%，距离容错量子计算又近了一步 📄</p>
+                  <div class="feed-tags"><span class="tag">量子计算</span><span class="tag">Nature</span></div>
+                </li>
+                <li class="feed-item">
+                  <div class="feed-meta"><span class="feed-author">认知神经科学实验室</span><span class="feed-time">6 小时前</span></div>
+                  <p class="feed-content">睡眠期间记忆巩固的最新机制研究：慢波睡眠与海马体重放的时序关联</p>
+                  <div class="feed-tags"><span class="tag">神经科学</span><span class="tag">Cell</span></div>
+                </li>
+                <li class="feed-item">
+                  <div class="feed-meta"><span class="feed-author">数学形式化组</span><span class="feed-time">1 天前</span></div>
+                  <p class="feed-content">Lean 4 证明助手现已验证费马大定理关键引理，形式化数学里程碑</p>
+                  <div class="feed-tags"><span class="tag">数学</span><span class="tag">形式化证明</span></div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="feed-panel"
+                 role="tabpanel"
+                 id="panel-crossover"
+                 aria-labelledby="tab-crossover"
+                 hidden>
+              <div class="feed-header">
+                <span class="feed-mode-badge crossover">跨界碰撞模式</span>
+                <p class="feed-mode-desc">将来自不同领域的思想碰撞在一起，激发意外的创意灵感与连接</p>
+              </div>
+              <ul class="feed-list">
+                <li class="feed-item">
+                  <div class="feed-meta"><span class="feed-author">设计 × 生物学</span><span class="feed-time">1 小时前</span></div>
+                  <p class="feed-content">章鱼皮肤的色素细胞结构 → 启发了新型柔性显示屏的像素排列方式 🦑✨</p>
+                  <div class="feed-tags"><span class="tag">仿生设计</span><span class="tag">跨界</span></div>
+                </li>
+                <li class="feed-item">
+                  <div class="feed-meta"><span class="feed-author">音乐 × 算法</span><span class="feed-time">4 小时前</span></div>
+                  <p class="feed-content">用傅里叶变换理解巴赫赋格曲的对位结构——数学家与音乐家的跨时空对话</p>
+                  <div class="feed-tags"><span class="tag">音乐理论</span><span class="tag">数学</span></div>
+                </li>
+                <li class="feed-item">
+                  <div class="feed-meta"><span class="feed-author">建筑 × 拓扑学</span><span class="feed-time">9 小时前</span></div>
+                  <p class="feed-content">莫比乌斯带建筑：如何用非欧几何重新定义"室内"与"室外"的边界？</p>
+                  <div class="feed-tags"><span class="tag">建筑</span><span class="tag">拓扑学</span></div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="feed-panel"
+                 role="tabpanel"
+                 id="panel-chronological"
+                 aria-labelledby="tab-chronological"
+                 hidden>
+              <div class="feed-header">
+                <span class="feed-mode-badge chronological">时间序模式</span>
+                <p class="feed-mode-desc">按发布时间严格排序，没有权重算法干预，只有真实的时间轴</p>
+              </div>
+              <ul class="feed-list">
+                <li class="feed-item">
+                  <div class="feed-meta"><span class="feed-author">@nova_dev</span><span class="feed-time">刚刚</span></div>
+                  <p class="feed-content">刚推送了一个新的开源项目：用 Rust 写的轻量级 HTTP/3 实现，欢迎 Star ⭐</p>
+                  <div class="feed-tags"><span class="tag">Rust</span><span class="tag">开源</span></div>
+                </li>
+                <li class="feed-item">
+                  <div class="feed-meta"><span class="feed-author">@echo_lin</span><span class="feed-time">2 分钟前</span></div>
+                  <p class="feed-content">今天读完了《哥德尔、艾舍尔、巴赫》，这本书让我对"自指"有了全新的理解</p>
+                  <div class="feed-tags"><span class="tag">读书</span><span class="tag">哲学</span></div>
+                </li>
+                <li class="feed-item">
+                  <div class="feed-meta"><span class="feed-author">@ray_physics</span><span class="feed-time">5 分钟前</span></div>
+                  <p class="feed-content">引力波探测器 LIGO 检测到新事件，疑似中子星与黑洞并合，数据正在分析中</p>
+                  <div class="feed-tags"><span class="tag">天文</span><span class="tag">LIGO</span></div>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div><!-- /algo-demo -->
+
+        <!-- Feature Grid -->
+        <div class="features-grid">
+          <article class="feature-card glass-card">
+            <div class="feature-icon" aria-hidden="true">🧭</div>
+            <h3 class="feature-title">算法透明度</h3>
+            <p class="feature-desc">每条推荐都附带算法说明，让你清楚知道内容为何出现在你的时间线上。</p>
+          </article>
+          <article class="feature-card glass-card">
+            <div class="feature-icon" aria-hidden="true">🌐</div>
+            <h3 class="feature-title">跨圈连接</h3>
+            <p class="feature-desc">突破兴趣气泡，在量子物理学家与古典音乐家之间建立意想不到的思想桥梁。</p>
+          </article>
+          <article class="feature-card glass-card">
+            <div class="feature-icon" aria-hidden="true">🔒</div>
+            <h3 class="feature-title">数据自主权</h3>
+            <p class="feature-desc">你的行为数据属于你，可随时导出或删除，平台不将其出售给第三方广告商。</p>
+          </article>
+          <article class="feature-card glass-card">
+            <div class="feature-icon" aria-hidden="true">🛠</div>
+            <h3 class="feature-title">算法插件市场</h3>
+            <p class="feature-desc">开发者可以发布自定义算法插件，社区投票筛选，生态共建。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ ABOUT ═══════════════════════ -->
+    <section class="about" id="about">
+      <div class="container about-inner">
+        <div class="about-text">
+          <div class="section-eyebrow">关于项目</div>
+          <h2 class="section-title">为什么需要 <span class="gradient-text">WebWhisper</span>？</h2>
+          <p class="about-desc">
+            当前互联网平台的推荐算法以最大化用户停留时间为目标，
+            不可避免地将用户困在各自的信息茧房中。
+            WebWhisper 相信：真正健康的社交生态，
+            应该让<strong>用户</strong>而非平台来决定信息的流动方式。
+          </p>
+          <p class="about-desc">
+            这是一个正在构建中的开放实验。我们欢迎研究者、设计师、
+            工程师和任何关心信息生态的人加入，共同探索更好的可能性。
+          </p>
+          <a href="#hero" class="btn btn-primary">申请内测资格</a>
+        </div>
+        <div class="about-visual" aria-hidden="true">
+          <div class="network-diagram">
+            <div class="node node-center">你</div>
+            <div class="node node-1">量子<br/>物理</div>
+            <div class="node node-2">现代<br/>诗歌</div>
+            <div class="node node-3">开源<br/>项目</div>
+            <div class="node node-4">古典<br/>音乐</div>
+            <div class="node node-5">气候<br/>科学</div>
+            <svg class="network-lines" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+              <line x1="150" y1="150" x2="150" y2="30"  class="edge"/>
+              <line x1="150" y1="150" x2="270" y2="95"  class="edge"/>
+              <line x1="150" y1="150" x2="240" y2="225" class="edge"/>
+              <line x1="150" y1="150" x2="60"  y2="225" class="edge"/>
+              <line x1="150" y1="150" x2="30"  y2="95"  class="edge"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="logo" aria-label="WebWhisper 首页">
+          <span class="logo-icon">◈</span>
+          <span class="logo-text">WebWhisper</span>
+        </a>
+        <p class="footer-tagline">打破信息茧房，重塑社交引力</p>
+      </div>
+
+      <nav class="footer-nav" aria-label="页脚导航">
+        <ul>
+          <li><a href="#hero">首页</a></li>
+          <li><a href="#concept">概念</a></li>
+          <li><a href="#about">关于</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-social">
+        <a href="#" class="social-link" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.071 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.547 1.377.203 2.394.1 2.647.641.698 1.028 1.591 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+          </svg>
+        </a>
+        <a href="#" class="social-link" aria-label="Twitter / X">
+          <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+        <a href="#" class="social-link" aria-label="电子邮件">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="m2 7 10 7 10-7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 WebWhisper · 开放实验项目 · MIT License</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
