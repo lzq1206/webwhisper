@@ -399,7 +399,9 @@ resetBtn.addEventListener("click", resetControls);
 settings = loadSettings();
 posts = loadPosts();
 if (posts.length < 1000) {
-  posts = [...generateDemoPosts(1000 - posts.length), ...posts];
+  const missingCount = 1000 - posts.length;
+  const generated = generateDemoPosts(missingCount);
+  posts = generated.concat(posts);
   persistPosts();
 }
 applySettingsToUI();
