@@ -520,8 +520,7 @@ textarea:focus {
 
   .admin-toggle-btn { display: none; }
 
-  /* Ensure admin panel always visible on desktop */
-  .admin-panel { display: grid !important; }
+/* Ensure admin panel always visible on desktop — overrides the mobile display:none */
 }
 
 /* ──────────────── Mobile: admin panel hidden by default ──────────────── */

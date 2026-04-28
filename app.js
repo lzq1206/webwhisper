@@ -21,6 +21,7 @@ const MAX_IMAGE_SIZE_BYTES = 4 * 1024 * 1024;
 const DIVERSITY_BOOST      = 0.15;  /* Strength of per-category diversity lifting */
 const USER_LIKE_BONUS      = 5;     /* Extra engagement credit when user liked the post */
 const ENGAGE_SCALE         = 3.5;   /* Divisor to normalise likes into [0,100] range */
+const USER_CATEGORY        = "用户发布"; /* Major label used for user-submitted posts */
 
 const defaults = {
   exploration: 55, rigor: 70, timeline: 45,
@@ -374,7 +375,7 @@ function renderChart(list) {
 /* ── Filter bar ── */
 function buildFilterBar() {
   filterBar.innerHTML = "";
-  const categories = ["全部", ...majors, "用户发布"];
+  const categories = ["全部", ...majors, USER_CATEGORY];
 
   for (const cat of categories) {
     const btn = document.createElement("button");
@@ -495,7 +496,7 @@ function renderFeed() {
     .map(p => ({ ...p, score: scorePost(p, state, majorCounts) }))
     .filter(p => p.score >= state.minScore)
     .filter(p => !state.hideImages || !p.image)
-    .filter(p => activeFilter === "全部" || (activeFilter === "用户发布" ? p.source === "user" : p.major === activeFilter))
+    .filter(p => activeFilter === "全部" || (activeFilter === USER_CATEGORY ? p.source === "user" : p.major === activeFilter))
     .sort((a, b) => b.score - a.score);
 
   /* Stats */
@@ -593,7 +594,7 @@ async function handleSubmit(e) {
   posts.unshift({
     id:          `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     author,
-    major:       "用户发布",
+    major:       USER_CATEGORY,
     text:        text || "[仅图片帖子]",
     image,
     exploration: randomInt(20, 100),
