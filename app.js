@@ -15,10 +15,12 @@ const SETTINGS_KEY         = "webwhisper_demo_settings_v2";
 const LIKES_KEY            = "webwhisper_demo_likes_v2";
 const PAGE_SIZE            = 25;
 const DEMO_POST_COUNT      = 1000;
-const MIN_POST_AGE_MS      = 5 * 60 * 1000;
-const MAX_POST_AGE_MS      = 14 * 24 * 60 * 60 * 1000;
+const MIN_DEMO_POST_AGE_MS = 5 * 60 * 1000;       /* Youngest demo post: 5 min ago */
+const MAX_DEMO_POST_AGE_MS = 14 * 24 * 60 * 60 * 1000; /* Oldest demo post: 14 days ago */
 const MAX_IMAGE_SIZE_BYTES = 4 * 1024 * 1024;
-const DIVERSITY_BOOST      = 0.15;
+const DIVERSITY_BOOST      = 0.15;  /* Strength of per-category diversity lifting */
+const USER_LIKE_BONUS      = 5;     /* Extra engagement credit when user liked the post */
+const ENGAGE_SCALE         = 3.5;   /* Divisor to normalise likes into [0,100] range */
 
 const defaults = {
   exploration: 55, rigor: 70, timeline: 45,
@@ -269,7 +271,7 @@ function generateDemoPosts(count = DEMO_POST_COUNT) {
       exploration: randomInt(5, 98),
       rigor:       randomInt(8, 97),
       likes:       randomInt(0, 350),
-      createdAt:   now - randomInt(MIN_POST_AGE_MS, MAX_POST_AGE_MS),
+      createdAt:   now - randomInt(MIN_DEMO_POST_AGE_MS, MAX_DEMO_POST_AGE_MS),
       source:      "demo"
     };
   });
@@ -309,12 +311,13 @@ function scorePost(post, state, majorCounts) {
 
   const hours   = (Date.now() - post.createdAt) / 36e5;
   const fresh   = clamp(100 - hours * 2.0);
-  const engage  = clamp((post.likes + (likes[post.id] ? 5 : 0)) / 3.5);
+  const engage  = clamp((post.likes + (likes[post.id] ? USER_LIKE_BONUS : 0)) / ENGAGE_SCALE);
 
   const tw = state.timeline / 100;
   let score = fresh * tw + quality * (1 - tw) + engage * 0.1;
 
   if (state.autoRegulation) {
+    /* Boost under-represented categories: higher avg/cnt ratio → stronger boost */
     const cnt = majorCounts.get(post.major) || 1;
     const avg = posts.length / majors.length;
     const boost = clamp((avg / cnt) * state.targetDiversity * DIVERSITY_BOOST);
@@ -330,6 +333,7 @@ function diversityIndex(list) {
   for (const p of list) cnts.set(p.major, (cnts.get(p.major) || 0) + 1);
   const vals = [...cnts.values()];
   const mx = Math.max(...vals), mn = Math.min(...vals);
+  /* diversityIndex: 100 = perfectly even distribution across categories; 0 = all in one category */
   return mx === 0 ? 0 : Math.round((1 - (mx - mn) / mx) * 100);
 }
 
@@ -455,12 +459,17 @@ function createPostEl(post) {
   likeBtn.setAttribute("aria-label", "点赞");
   likeBtn.innerHTML = `${isLiked ? "♥" : "♡"} <span>${post.likes + (isLiked ? 1 : 0)}</span>`;
   likeBtn.addEventListener("click", () => {
+    /* Operate on the original post in the posts array to keep storage consistent */
+    const original = posts.find(p => p.id === post.id);
+    if (!original) return;
     if (likes[post.id]) {
       delete likes[post.id];
-      post.likes = Math.max(0, post.likes - 1);
+      original.likes = Math.max(0, original.likes - 1);
+      post.likes = original.likes;
     } else {
       likes[post.id] = true;
-      post.likes += 1;
+      original.likes += 1;
+      post.likes = original.likes;
     }
     persistLikes();
     persistPosts();
@@ -486,7 +495,7 @@ function renderFeed() {
     .map(p => ({ ...p, score: scorePost(p, state, majorCounts) }))
     .filter(p => p.score >= state.minScore)
     .filter(p => !state.hideImages || !p.image)
-    .filter(p => activeFilter === "全部" || p.major === activeFilter)
+    .filter(p => activeFilter === "全部" || (activeFilter === "用户发布" ? p.source === "user" : p.major === activeFilter))
     .sort((a, b) => b.score - a.score);
 
   /* Stats */
@@ -632,10 +641,14 @@ adminToggle.addEventListener("click", () => {
 });
 
 loadMoreBtn.addEventListener("click", () => {
+  const prevCount = currentPage * PAGE_SIZE;
   currentPage += 1;
   renderFeed();
-  /* Scroll to new content area */
-  loadMoreBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+  /* Scroll to the first newly added item */
+  const items = feedList.querySelectorAll(".feed-item");
+  if (items[prevCount]) {
+    items[prevCount].scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 });
 
 form.addEventListener("submit", handleSubmit);

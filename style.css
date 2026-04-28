@@ -119,8 +119,8 @@ h1, h2, h3, p { margin: 0; }
   font-size: 13px;
 }
 
-.checkbox-row {
-  justify-content: flex-start !important;
+.admin-panel label.checkbox-row {
+  justify-content: flex-start;
   gap: 8px;
   cursor: pointer;
 }
