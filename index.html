@@ -3,25 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Orbit Feed：你的信息流，由你的参数决定。" />
-  <title>Orbit Feed | 算法控制台演示</title>
+  <meta name="description" content="WebWhisper：可匿名发帖 + 算法调控后台 + 1000条虚拟内容演示。" />
+  <title>WebWhisper Demo</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="site-header">
-    <div class="brand">[Orbit_Feed]</div>
-    <p class="slogan">你的信息流，由你的参数决定</p>
+    <div class="site-brand">
+      <span class="brand-icon">◉</span>
+      <div>
+        <h1>WebWhisper</h1>
+        <p>算法透明 · 匿名发布 · 内容自由</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="seedBtn" class="secondary-btn" type="button">重置演示数据</button>
+      <button id="adminToggle" class="secondary-btn admin-toggle-btn" aria-expanded="false" aria-controls="adminPanel" type="button">⚙ 后台</button>
+    </div>
   </header>
 
   <main class="layout">
-    <button id="panelToggle" class="panel-toggle" aria-expanded="false" aria-controls="controlPanel">
-      打开算法控制台
-    </button>
+    <aside id="adminPanel" class="admin-panel" aria-label="后台控制面板">
+      <h2>⚙ 后台控制台</h2>
 
-    <aside id="controlPanel" class="control-panel" aria-label="Algorithm Control Panel">
-      <h1>Algorithm Control Panel</h1>
-
-      <form class="controls" autocomplete="off">
+      <div class="control-group">
+        <h3>排序权重</h3>
         <label for="exploration">跨界探索度 <span id="explorationValue">55</span></label>
         <input id="exploration" type="range" min="0" max="100" value="55" />
 
@@ -30,30 +36,90 @@
 
         <label for="timeline">时间线权重 <span id="timelineValue">45</span></label>
         <input id="timeline" type="range" min="0" max="100" value="45" />
+      </div>
 
-        <div class="meter-card" aria-label="参数雷达图替代展示">
-          <div class="meter-row">
-            <span>探索度</span>
-            <div class="meter-track"><i id="explorationMeter"></i></div>
+      <div class="control-group">
+        <h3>内容过滤</h3>
+        <label for="minScore">最低展示分 <span id="minScoreValue">35</span></label>
+        <input id="minScore" type="range" min="0" max="100" value="35" />
+
+        <label class="checkbox-row">
+          <input id="hideImages" type="checkbox" />
+          隐藏图片帖子
+        </label>
+      </div>
+
+      <div class="control-group">
+        <h3>自动调控</h3>
+        <label class="checkbox-row">
+          <input id="autoRegulation" type="checkbox" checked />
+          开启多样性调控
+        </label>
+
+        <label for="targetDiversity">目标多样性 <span id="targetDiversityValue">60</span></label>
+        <input id="targetDiversity" type="range" min="0" max="100" value="60" />
+      </div>
+
+      <button id="resetBtn" class="secondary-btn full-width" type="button">恢复默认参数</button>
+
+      <section class="stats" aria-live="polite">
+        <h3>算法效果</h3>
+        <div class="stats-grid">
+          <div class="stat-cell">
+            <span class="stat-value" id="statTotal">0</span>
+            <span class="stat-label">总帖子</span>
           </div>
-          <div class="meter-row">
-            <span>严谨度</span>
-            <div class="meter-track"><i id="rigorMeter"></i></div>
+          <div class="stat-cell">
+            <span class="stat-value" id="statShown">0</span>
+            <span class="stat-label">当前展示</span>
           </div>
-          <div class="meter-row">
-            <span>时间线</span>
-            <div class="meter-track"><i id="timelineMeter"></i></div>
+          <div class="stat-cell">
+            <span class="stat-value" id="statDiversity">0</span>
+            <span class="stat-label">多样性指数</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-value" id="statImageRatio">0%</span>
+            <span class="stat-label">图片占比</span>
           </div>
         </div>
-
-        <button id="resetBtn" type="button" class="reset-btn">重置为默认</button>
-      </form>
+        <div id="categoryChart" class="category-chart" aria-label="分类分布图"></div>
+      </section>
     </aside>
 
-    <section class="feed-section" aria-live="polite">
-      <h2>Dynamic Feed Simulation</h2>
-      <p class="feed-tip">拖动左侧参数，实时查看 Feed 排序变化。</p>
-      <ul id="feedList" class="feed-list"></ul>
+    <section class="content-panel">
+      <div class="composer-card">
+        <button class="composer-toggle" id="composerToggle" aria-expanded="false" type="button">
+          ✏ 发布帖子（无需注册）
+        </button>
+        <div id="composerBody" class="composer-body" hidden>
+          <form id="postForm" autocomplete="off">
+            <label for="author">昵称（可空，默认匿名）</label>
+            <input id="author" type="text" maxlength="32" placeholder="例如：匿名观察员" />
+
+            <label for="textContent">帖子内容（文字）</label>
+            <textarea id="textContent" maxlength="280" rows="4" placeholder="输入你想发布的内容…"></textarea>
+            <div class="char-count"><span id="charCount">0</span> / 280</div>
+
+            <label for="imageUrl">图片地址（可选）</label>
+            <input id="imageUrl" type="url" placeholder="https://example.com/photo.jpg" />
+
+            <label for="imageFile">或上传本地图片（可选）</label>
+            <input id="imageFile" type="file" accept="image/*" />
+
+            <button class="primary-btn" type="submit">立即发布</button>
+            <p id="formMessage" class="form-message" role="status"></p>
+          </form>
+        </div>
+      </div>
+
+      <div class="feed-header">
+        <h2>动态信息流</h2>
+        <div class="filter-bar" id="filterBar" role="tablist" aria-label="分类过滤"></div>
+      </div>
+      <ul id="feedList" class="feed-list" aria-live="polite"></ul>
+      <div class="load-more-wrapper">
+        <button id="loadMoreBtn" class="secondary-btn" type="button" hidden>加载更多</button>
+      </div>
     </section>
   </main>
 
